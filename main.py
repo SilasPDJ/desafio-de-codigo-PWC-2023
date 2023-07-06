@@ -13,7 +13,7 @@ class Desafios:
 
         return revered_phrase
 
-    def remove_duplicated_characters(self, string_phrase: str):
+    def remove_duplicated_characters(self, string_phrase: str) -> str:
         """ outputs string_phrase as it is and reversed, finally returns it without duplicated characters
         :param string_phrase: any string text
         :return: string_without_duplicates
@@ -24,6 +24,11 @@ class Desafios:
         print(f"{' ' * (len(self.title) - 1)}: {string_without_duplicates}")
         return string_without_duplicates
 
+    def find_largest_palindrome(self, string_phrase: str) -> str:
+        words = string_phrase.split()
+        words_in_reverse = [w[-1::-1] for w in words]
+        return 'init debug'
+
 
 if __name__ == '__main__':
     desafio = Desafios()
@@ -31,6 +36,8 @@ if __name__ == '__main__':
 
     desafio_02 = desafio.remove_duplicated_characters('Hello, World!')
     desafio_02_extra = desafio.remove_duplicated_characters('Sem caracteres duplicados!')
+
+    desafio_03 = desafio.find_largest_palindrome('bababab')
 
     print('debuging')
 
