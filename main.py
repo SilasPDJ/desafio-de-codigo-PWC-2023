@@ -1,5 +1,5 @@
 class Desafios:
-    title = "Phrase (before and after):"
+    title = "(before and after):"
 
     def reverse_phrase_part_1(self, string_phrase: str) -> str:
         """ outputs string_phrase as it is and reversed, finally returns it reversed
@@ -28,16 +28,15 @@ class Desafios:
         return string_without_duplicates
 
     def find_largest_palindrome_substring(self, string_phrase: str) -> str:
-        """ outputs only the palindromes and the largest one that is the substring that will be returned
+        """ outputs the largest palindrome substring that is in each word. After that, outputs the largest between them.
+            If a palindrome in each word have same size, it shows the first
+
         :param string_phrase: any string text
         :return: the largest palindrome in the string_phrase passed by parameter if it exists, else an empty string
         """
         words_list = string_phrase.split()
-        words_list_in_reverse = [word[-1::-1] for word in words_list]
-        palindrome_words = [word for e, word in enumerate(words_list_in_reverse) if word.upper() == words_list[e].upper()]
-
         # finding palindrome in any place of a word
-        palindrome_word_found_list = {}
+        palindrome_words_list = {}
         for word in words_list:
 
             # The minimum number of letters possible for palindromes is 3
@@ -45,23 +44,27 @@ class Desafios:
                 continue
 
             # find palindromes
-            palindrome_word_found_list[word] = []
+            palindrome_words_list[word] = []
             for start_index in range(len(word)):
                 # i + 3 because the minimum number of letters possible for palindromes is 3
                 for end_index in range(start_index + 3, len(word)+1):
                     term = word[start_index:end_index]
-                    if term == term[::-1] and term not in palindrome_word_found_list:
-                        palindrome_word_found_list[word].append(term)
+                    if term == term[::-1] and term not in palindrome_words_list[word]:
+                        palindrome_words_list[word].append(term)
 
-        if palindrome_words:
+        # remove keywords without palindromes in it
+        palindrome_words_list = {key: val for key, val in palindrome_words_list.items() if val}
+        if palindrome_words_list:
+            # largest palindromes per word & largest palindrome substring of all
+            largest_palindrome_in_each_word = {key: max(val) for key, val in palindrome_words_list.items()}
+            largest_palindrome_substring = max(largest_palindrome_in_each_word.values())
+
             print("Ex.3) Find Largest palindrome word")
-            largest_palindrome_substring = max(palindrome_words)
-            print(f"{self.title} {palindrome_words}")
-            print(f"{' ' * (len(self.title) - 1)}: {largest_palindrome_substring}")
+            print(f"{self.title} {largest_palindrome_in_each_word}")
+            print(f"{' ' * (len(self.title) - 1)}: largest palindrome is {largest_palindrome_substring}")
 
             return largest_palindrome_substring
-
-        # palindrome_words list could be empty
+        # palindrome_words_list list could be empty
         return ''
 
 
@@ -72,9 +75,9 @@ if __name__ == '__main__':
     desafio_02 = desafio.remove_duplicated_characters('Hello, World!')
     desafio_02_extra = desafio.remove_duplicated_characters('Sem caracteres duplicados!')
 
-    desafio_03_extra_1 = desafio.find_largest_palindrome_substring('babaddalalalana')
     desafio_03 = desafio.find_largest_palindrome_substring('babad')
-    desafio_03_extra_2 = desafio.find_largest_palindrome_substring('hello world anna natan')
+    desafio_03_extra_1 = desafio.find_largest_palindrome_substring('babaddalalalana ana')
+    desafio_03_extra_2 = desafio.find_largest_palindrome_substring('hello world ana ama')
 
     print('debuging')
 
