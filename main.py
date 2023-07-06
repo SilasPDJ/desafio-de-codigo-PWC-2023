@@ -8,6 +8,7 @@ class Desafios:
         """
         revered_phrase = " ".join(string_phrase.split()[-1::-1])
 
+        print("Ex.1)")
         print(f"{self.title} {string_phrase}")
         print(f"{' ' * (len(self.title) - 1)}: {revered_phrase}")
 
@@ -20,6 +21,7 @@ class Desafios:
         """
         string_without_duplicates = ''.join(dict.fromkeys(string_phrase).keys())
 
+        print("Ex.2)")
         print(f"{self.title} {string_phrase}")
         print(f"{' ' * (len(self.title) - 1)}: {string_without_duplicates}")
 
@@ -34,6 +36,7 @@ class Desafios:
         words_list_in_reverse = [word[-1::-1] for word in words]
         palindrome_words = [word for e, word in enumerate(words_list_in_reverse) if word.upper() == words[e].upper()]
 
+        print("Ex.3)")
         if palindrome_words:
             largest_palindrome_substring = max(palindrome_words)
 
