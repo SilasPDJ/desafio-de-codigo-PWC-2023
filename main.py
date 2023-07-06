@@ -22,6 +22,7 @@ class Desafios:
 
         print(f"{self.title} {string_phrase}")
         print(f"{' ' * (len(self.title) - 1)}: {string_without_duplicates}")
+
         return string_without_duplicates
 
     def find_largest_palindrome_substring(self, string_phrase: str) -> str:
@@ -32,12 +33,18 @@ class Desafios:
         words = string_phrase.split()
         words_list_in_reverse = [word[-1::-1] for word in words]
         palindrome_words = [word for e, word in enumerate(words_list_in_reverse) if word.upper() == words[e].upper()]
+
         if palindrome_words:
             largest_palindrome_substring = max(palindrome_words)
+
+            print(f"{self.title} {palindrome_words}")
+            print(f"{' ' * (len(self.title) - 1)}: {largest_palindrome_substring}")
+
             return largest_palindrome_substring
 
         # palindrome_words list could be empty
         return ''
+
 
 if __name__ == '__main__':
     desafio = Desafios()
