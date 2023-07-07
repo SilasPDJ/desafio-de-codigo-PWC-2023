@@ -97,6 +97,7 @@ class Desafios:
         :return bool: if True -> is an anagram of palindrome. else False
         """
         print(f"Ex.5) Get Anagrams of palindromes for word \033[1;34m{word}\033[m")
+        # TODO check if the word is in portuguese or english
 
         # get anagrams
         anagrams_dict = self._get_anagrams_dict(main_word=word)
@@ -118,17 +119,14 @@ class Desafios:
                     anagrams_of_palindrome_words.append(anagram)
         if any(anagrams_of_palindrome_words):
             # Yes it is anagram of palindrome
-            print("\033[1;32mYes!!! \033[m", end='')
-            if len(anagrams_of_palindrome_words) == 1:
-                print(f"The anagram of palindrome is: {anagrams_of_palindrome_words[0]}")
-            else:
-                # maybe it is not really possible to display this block code
-                print(f"The anagrams of palindrome are: {anagrams_of_palindrome_words}")
+            print("\033[1;32mYes!!!\033[m", anagrams_of_palindrome_words[0])
+            # in this case it will be always only one word...
             return True
-        elif anagrams_dict:
+        elif any(anagrams_dict.values()):
             # Despite having anagrams, it doesn't contains palindrome words
+            only_anagrams_list = [words for words in list(anagrams_dict.values()) if words]
             print(
-                f"Despite having anagrams like {list(anagrams_dict.values())[0]}, It DOESN'T have any anagram of palindrome")
+                f"Despite having anagrams like {only_anagrams_list}, It DOESN'T have any anagram of palindrome")
             return False
         else:
             # Nor a palindrome neither an anagram
@@ -237,6 +235,12 @@ if __name__ == '__main__':
     desafio_04 = desafio.capitalize_phrasal_strings("hello. how are you? i'm fine, thank you")
     print()
 
-    desafio_05 = desafio.is_anagram_of_palindrome('racecar')
-    desafio_05_extra_1 = desafio.is_anagram_of_palindrome('Alegria')
+    for word in ['racecar', 'Alegria', 'Amor', 'osso', 'Marrocos']:
+        desafio_05_output = desafio.is_anagram_of_palindrome(word)
+        print(f'Is {word} an anagram of palindrome? ',end='')
+        if desafio_05_output:
+            print('\033[1;32m', desafio_05_output, '\033[1;31m')
+        else:
+            print('\033[1;31m', desafio_05_output, '\033[1;31m')
+
     print('debuging')
