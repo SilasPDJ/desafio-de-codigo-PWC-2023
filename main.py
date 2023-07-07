@@ -1,4 +1,7 @@
 import re
+import itertools
+import requests
+
 class Desafios:
     title = "(before and after):"
 
@@ -70,8 +73,8 @@ class Desafios:
 
     def capitalize_phrasal_strings(self, string_phrase: str) -> str:
         """
-        :param string_phrase:
-        :return:
+        :param string_phrase: any string text
+        :return: string phrase capitalized when it starts a new sentence
         """
         pattern = r'([.?!]\s*\w)'
         def sets_repl(match: re.Match): return match.group(1).upper()
@@ -79,18 +82,18 @@ class Desafios:
         capitalized_string_phrase = string_phrase.capitalize()
         capitalized_string_phrase = re.sub(pattern, sets_repl, capitalized_string_phrase)
 
-        print("Ex.3) Find Largest palindrome word")
+        print("Ex.4) Capitalize string that initializes a phrase")
+        print(f"{self.title} {string_phrase}")
+        print(f"{' ' * (len(self.title) - 1)}: {capitalized_string_phrase}")
 
         return capitalized_string_phrase
 
     def _is_anagram_of_palindrome(self, word):
-        # loads dictionary
         my_dictonary = self.__loads_portuguese_dictonary_as_list()
 
         print()
 
     def __loads_portuguese_dictonary_as_list(self) -> list:
-        import requests
 
         destination_file = "br-utf8.txt"
         try:
