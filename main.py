@@ -93,13 +93,16 @@ class Desafios:
 
     def is_anagram_of_palindrome(self, word: str) -> bool:
         """ outputs when if it's an anagram of palindrome, or only anagram or only palindrome
-        :param word:
+        :param word: only one word
         :return bool: if True -> is an anagram of palindrome. else False
         """
-        print(f"Ex.5) Get Anagrams of palindromes for word \033[1;34m{word}\033[m")
-        # TODO check if the word is in portuguese or english
+        # Only one word per argument, if *words as argument, then try to yield instead returning
+        if len(word.split()) > 1:
+            raise ValueError('It is supposed to be only one word per string')
 
-        # get anagrams
+        print(f"Ex.5) Get Anagrams of palindromes for word \033[1;34m{word}\033[m")
+
+        # get anagrams & check idiom Andof word
         anagrams_dict = self._get_anagrams_dict(main_word=word)
         # load a txt dictionary from the web
         portuguese_real_words, english_real_words = self._loads_pt_and_en_words_dictonary()
@@ -130,7 +133,7 @@ class Desafios:
             return False
         else:
             # Nor a palindrome neither an anagram
-            print("We don't have any palindromes or anagrams")
+            print("We don't have any palindromes or anagrams found in any dictionary")
             return False
 
     def _get_anagrams_dict(self, main_word: str) -> dict:
@@ -142,22 +145,38 @@ class Desafios:
             raise ValueError('It is supposed to be only one word per string')
         # Get dictionary words
         portuguese_real_words, english_real_words = self._loads_pt_and_en_words_dictonary()
+
+        # Check if main_word is in english or portuguese
+        _word_in_english = _word_in_portuguese = False
+        if main_word.lower() in english_real_words:
+            _word_in_english = True
+        if main_word.lower() in portuguese_real_words:
+            _word_in_portuguese = True
+
+        # declare dictionary_as_list based on word_in_english and word_in_portuguese
+        if _word_in_english and _word_in_portuguese:
+            dictionary_as_list = sorted(portuguese_real_words + english_real_words)
+        elif _word_in_portuguese:
+            dictionary_as_list = portuguese_real_words
+        elif _word_in_english:
+            dictionary_as_list = english_real_words
+        else:
+            dictionary_as_list = english_real_words
+
         # Get all sequence possible through word using permutation
         permuted_sequence = self._get_permutation_word_sequence(any_word=main_word)
 
         dict_with_words_by_initial = {}
-        # looping through both english and portuguese dictionary real words
-        for dictionary_as_list in [portuguese_real_words, english_real_words]:
-            # loop through all main_word letters  that did not repeat yet
-            for e, initial_letter in enumerate(sorted(set(letter.lower() for letter in main_word))):
-                dict_with_words_by_initial[initial_letter] = []
-                # filter in dictionary by the initial letter of the real word to check if term exists
-                real_words = list(filter(lambda w: w.startswith(initial_letter), dictionary_as_list))
-                # filter only terms that contain the initial letter
-                for term in filter(lambda w: w.startswith(initial_letter), permuted_sequence):
-                    # # an anagram needs to be an existent and real word
-                    if term in real_words:
-                        dict_with_words_by_initial[initial_letter].append(term)
+        # loop through all main_word letters  that did not repeat yet
+        for e, initial_letter in enumerate(sorted(set(letter.lower() for letter in main_word))):
+            dict_with_words_by_initial[initial_letter] = []
+            # filter in dictionary by the initial letter of the real word to check if term exists
+            real_words = list(filter(lambda w: w.startswith(initial_letter), dictionary_as_list))
+            # filter only terms that contain the initial letter
+            for term in filter(lambda w: w.startswith(initial_letter), permuted_sequence):
+                # # an anagram needs to be an existent and real word
+                if term in real_words:
+                    dict_with_words_by_initial[initial_letter].append(term)
 
             # print(f'5 - Debugging finished for words that starts with the letter of main_word: {initial_letter} in position: {e}')
         return dict_with_words_by_initial
@@ -199,7 +218,7 @@ class Desafios:
         for destination_file, url in zip(destination_files, urls):
             try:
                 with open(destination_file, 'r') as file:
-                    en_with_pt_lists.append([word.replace('\n', '') for word in file.readlines()])
+                    en_with_pt_lists.append([val.lower().replace('\n', '') for val in file.readlines()])
 
             except FileNotFoundError:
                 response = requests.get(url)
@@ -210,10 +229,10 @@ class Desafios:
                     # omg, the racecar word is not yet on this txt
                     content_list.insert(content_list.index('racecard'), 'racecar')
 
-                en_with_pt_lists.append(content_list)
-
                 with open(destination_file, "w") as file:
                     file.write("\n".join(content_list))
+
+                en_with_pt_lists.append([val.lower() for val in content_list])
 
         return en_with_pt_lists
 
@@ -235,7 +254,7 @@ if __name__ == '__main__':
     desafio_04 = desafio.capitalize_phrasal_strings("hello. how are you? i'm fine, thank you")
     print()
 
-    for word in ['racecar', 'Alegria', 'Amor', 'osso', 'Marrocos']:
+    for word in ['racecar', 'Alegria', 'Amor', 'osso']:
         desafio_05_output = desafio.is_anagram_of_palindrome(word)
         print(f'Is {word} an anagram of palindrome? ',end='')
         if desafio_05_output:
