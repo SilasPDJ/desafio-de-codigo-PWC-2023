@@ -90,11 +90,40 @@ class Desafios:
 
         return capitalized_string_phrase
 
-    def is_anagram_of_palindrome(self, word: str):
+    def is_anagram_of_palindrome(self, word: str) -> list:
+        print("Ex.5) Get Anagrams of palindromes")
+
+        # get anagrams
         anagrams_dict = self.get_anagrams_dict(main_word=word)
-        print()
+        anagrams_of_palindrome_words = []
+
+        # All palindromes are anagrams as well
+        if self._is_palindrome(word):
+            if word[-1::-1].lower() in self._loads_portuguese_dictonary_as_list():
+                anagrams_of_palindrome_words.append(word[-1::-1].lower())
+
+        for key, values in anagrams_dict.items():
+            # check if any anagram is a palindrome
+            for anagram in values:
+                if self._is_palindrome(anagram):
+                    anagrams_of_palindrome_words.append(anagram)
+        if any(anagrams_of_palindrome_words):
+            # Yes it is anagram of palindrome
+            print(f"The anagrams of palindrome for {word} are: {anagrams_of_palindrome_words}")
+            return anagrams_of_palindrome_words
+        elif anagrams_dict:
+            # Despite having anagrams, it doesn't contains palindrome words
+            print(f"Despite having anagrams like {list(anagrams_dict.values())[0]}, It DOESN'T have any anagrams of palindrome")
+            return []
+        else:
+            # Nor a palindrome neither an anagram
+            print("We don't have any palindromes or anagrams")
+            return []
 
     def get_anagrams_dict(self, main_word: str) -> dict:
+        if len(main_word.split()) > 1:
+            pass
+            # TODO search for more than one word in language dictionary and load english dictionary as well
         # Get dictionary words
         dictionary_as_list = self._loads_portuguese_dictonary_as_list()
         # Get all sequence possible through word using permutation
@@ -113,8 +142,11 @@ class Desafios:
                 if term in real_words:
                     dict_with_words_by_initial[initial_letter].append(term)
 
-            print(f'Debugging finished for words that starts with the letter of main_word: {initial_letter} in position: {e}')
+            # print(f'5 - Debugging finished for words that starts with the letter of main_word: {initial_letter} in position: {e}')
         return dict_with_words_by_initial
+
+    def _is_palindrome(self, any_word: str):
+        return any_word == any_word[-1::-1]
 
     def _get_permutation_word_sequence(self, word: str, custom_lower_case=True):
         # Gera todas as permutações possíveis da sequência
@@ -156,6 +188,6 @@ if __name__ == '__main__':
 
     desafio_04 = desafio.capitalize_phrasal_strings("hello. how are you? i'm fine, thank you")
 
+    desafio_05 = desafio.is_anagram_of_palindrome('racecar')
     desafio_05_extra = desafio.is_anagram_of_palindrome('Alegria')
-    desafio_05 = desafio.is_anagram_of_palindrome('Olá tudo bem')
     print('debuging')
