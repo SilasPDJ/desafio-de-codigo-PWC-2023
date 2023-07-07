@@ -91,21 +91,27 @@ class Desafios:
         return capitalized_string_phrase
 
     def is_anagram_of_palindrome(self, word: str):
+        is_anagram = self._is_anagram(main_word=word)
+        print()
+
+    def _is_anagram(self, main_word: str):
         # Get dictionary words
         dictionary_as_list = self._loads_portuguese_dictonary_as_list()
         # Get all sequence possible through word using permutation
-        permuted_sequence = self._get_permutation_word_sequence(word=word)
+        permuted_sequence = self._get_permutation_word_sequence(word=main_word)
 
-        anagramas_found_list = {}
-        anagramas_found_list[word] = []
-        for term in permuted_sequence:
-            # filter though the initial letter of the term to check if exists the word exists in dictionary
-            # an anagram needs to be an existent word
-            for real_word in filter(lambda w: w.startswith(term[0]), dictionary_as_list):
-                if real_word.lower() == term:
-                    anagramas_found_list[word].append(term)
+        # loop through all letter in main_word
+        for e, initial_letter in enumerate(main_word.lower()):
+            # filter only terms that contain the initial letter
+            for term in filter(lambda w: w.startswith(initial_letter), permuted_sequence):
+                # filter in dictionary by the initial letter of the real word to check if term exists
+                for real_word in filter(lambda w: w.startswith(initial_letter), dictionary_as_list):
+                    # an anagram needs to be an existent and real word
+                    if real_word.lower() == term:
+                        return True
+            print(f'Debugging finished for words that starts with the letter of main_word: {initial_letter} in position: {e}')
+        return False
 
-        print()
 
     def _get_permutation_word_sequence(self, word: str, custom_lower_case=True):
         # Gera todas as permutações possíveis da sequência
