@@ -91,27 +91,30 @@ class Desafios:
         return capitalized_string_phrase
 
     def is_anagram_of_palindrome(self, word: str):
-        is_anagram = self._is_anagram(main_word=word)
+        anagrams_dict = self.get_anagrams_dict(main_word=word)
         print()
 
-    def _is_anagram(self, main_word: str):
+    def get_anagrams_dict(self, main_word: str) -> dict:
         # Get dictionary words
         dictionary_as_list = self._loads_portuguese_dictonary_as_list()
         # Get all sequence possible through word using permutation
         permuted_sequence = self._get_permutation_word_sequence(word=main_word)
 
-        # loop through all letter in main_word
-        for e, initial_letter in enumerate(main_word.lower()):
+        dict_with_words_by_initial = {}
+
+        # loop through all main_word letters  that did not repeat yet
+        for e, initial_letter in enumerate(sorted(set(letter.lower() for letter in main_word))):
+            dict_with_words_by_initial[initial_letter] = []
+            # filter in dictionary by the initial letter of the real word to check if term exists
+            real_words = list(filter(lambda w: w.startswith(initial_letter), dictionary_as_list))
             # filter only terms that contain the initial letter
             for term in filter(lambda w: w.startswith(initial_letter), permuted_sequence):
-                # filter in dictionary by the initial letter of the real word to check if term exists
-                for real_word in filter(lambda w: w.startswith(initial_letter), dictionary_as_list):
-                    # an anagram needs to be an existent and real word
-                    if real_word.lower() == term:
-                        return True
-            print(f'Debugging finished for words that starts with the letter of main_word: {initial_letter} in position: {e}')
-        return False
+                # # an anagram needs to be an existent and real word
+                if term in real_words:
+                    dict_with_words_by_initial[initial_letter].append(term)
 
+            print(f'Debugging finished for words that starts with the letter of main_word: {initial_letter} in position: {e}')
+        return dict_with_words_by_initial
 
     def _get_permutation_word_sequence(self, word: str, custom_lower_case=True):
         # Gera todas as permutações possíveis da sequência
