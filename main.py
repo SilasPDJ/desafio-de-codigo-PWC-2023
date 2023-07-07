@@ -83,6 +83,28 @@ class Desafios:
 
         return capitalized_string_phrase
 
+    def _is_anagram_of_palindrome(self, word):
+        # loads dictionary
+        my_dictonary = self.__loads_portuguese_dictonary_as_list()
+
+        print()
+
+    def __loads_portuguese_dictonary_as_list(self) -> list:
+        import requests
+
+        destination_file = "br-utf8.txt"
+        try:
+            with open(destination_file, 'r') as file:
+                return [word.replace('\n', '') for word in file.readlines()]
+        except FileNotFoundError:
+            url = "https://www.ime.usp.br/~pf/dicios/br-utf8.txt"
+            response = requests.get(url)
+            content = response.content.decode("utf-8")
+
+            with open(destination_file, "w") as file:
+                file.write(content)
+            return content.split('\n')
+
 
 if __name__ == '__main__':
     desafio = Desafios()
@@ -96,5 +118,7 @@ if __name__ == '__main__':
     desafio_03_extra_2 = desafio.find_largest_palindrome_substring('hello world ana ama')
 
     desafio_04 = desafio.capitalize_phrasal_strings("hello. how are you? i'm fine, thank you")
+
+    desafio_05 = desafio._is_anagram_of_palindrome('Olá tudo bem')
     print('debuging')
 
