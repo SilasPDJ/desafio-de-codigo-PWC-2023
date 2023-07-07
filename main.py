@@ -1,3 +1,4 @@
+import re
 class Desafios:
     title = "(before and after):"
 
@@ -67,6 +68,21 @@ class Desafios:
         # palindrome_words_list list could be empty
         return ''
 
+    def capitalize_phrasal_strings(self, string_phrase: str) -> str:
+        """
+        :param string_phrase:
+        :return:
+        """
+        pattern = r'([.?!]\s*\w)'
+        def sets_repl(match: re.Match): return match.group(1).upper()
+
+        capitalized_string_phrase = string_phrase.capitalize()
+        capitalized_string_phrase = re.sub(pattern, sets_repl, capitalized_string_phrase)
+
+        print("Ex.3) Find Largest palindrome word")
+
+        return capitalized_string_phrase
+
 
 if __name__ == '__main__':
     desafio = Desafios()
@@ -79,5 +95,6 @@ if __name__ == '__main__':
     desafio_03_extra_1 = desafio.find_largest_palindrome_substring('babaddalalalana ana')
     desafio_03_extra_2 = desafio.find_largest_palindrome_substring('hello world ana ama')
 
+    desafio_04 = desafio.capitalize_phrasal_strings("hello. how are you? i'm fine, thank you")
     print('debuging')
 
