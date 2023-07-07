@@ -1,5 +1,5 @@
 # desafio-de-codigo-PWC-2023
-This repository contains solutions for various 05 specific code challenges for PWC recruitment. 
+This repository contains solutions for 05 specific code challenges from PWC recruitment. 
 
 Each challenge is implemented by a public method within the `Desafios` class.
 
