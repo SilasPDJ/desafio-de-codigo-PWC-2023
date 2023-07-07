@@ -1,6 +1,7 @@
 import re
-import itertools
+from itertools import permutations
 import requests
+
 
 class Desafios:
     title = "(before and after):"
@@ -51,7 +52,7 @@ class Desafios:
             palindrome_words_list[word] = []
             for start_index in range(len(word)):
                 # i + 3 because the minimum number of letters possible for palindromes is 3
-                for end_index in range(start_index + 3, len(word)+1):
+                for end_index in range(start_index + 3, len(word) + 1):
                     term = word[start_index:end_index]
                     if term == term[::-1] and term not in palindrome_words_list[word]:
                         palindrome_words_list[word].append(term)
@@ -77,6 +78,7 @@ class Desafios:
         :return: string phrase capitalized when it starts a new sentence
         """
         pattern = r'([.?!]\s*\w)'
+
         def sets_repl(match: re.Match): return match.group(1).upper()
 
         capitalized_string_phrase = string_phrase.capitalize()
@@ -88,12 +90,35 @@ class Desafios:
 
         return capitalized_string_phrase
 
-    def _is_anagram_of_palindrome(self, word):
-        my_dictonary = self.__loads_portuguese_dictonary_as_list()
+    def is_anagram_of_palindrome(self, word: str):
+        # Get dictionary words
+        dictionary_as_list = self._loads_portuguese_dictonary_as_list()
+        # Get all sequence possible through word using permutation
+        permuted_sequence = self._get_permutation_word_sequence(word=word)
+
+        anagramas_found_list = {}
+        anagramas_found_list[word] = []
+        for term in permuted_sequence:
+            # filter though the initial letter of the term to check if exists the word exists in dictionary
+            # an anagram needs to be an existent word
+            for real_word in filter(lambda w: w.startswith(term[0]), dictionary_as_list):
+                if real_word.lower() == term:
+                    anagramas_found_list[word].append(term)
 
         print()
 
-    def __loads_portuguese_dictonary_as_list(self) -> list:
+    def _get_permutation_word_sequence(self, word: str, custom_lower_case=True):
+        # Gera todas as permutações possíveis da sequência
+        list_of_sequences_possible = list(permutations(word))
+
+        # Junta as letras de cada permutação em uma palavra
+        words = [''.join(sequenced_word) for sequenced_word in list_of_sequences_possible]
+        if custom_lower_case:
+            return [w.lower() for w in words]
+        else:
+            return words
+
+    def _loads_portuguese_dictonary_as_list(self) -> list:
 
         destination_file = "br-utf8.txt"
         try:
@@ -122,6 +147,6 @@ if __name__ == '__main__':
 
     desafio_04 = desafio.capitalize_phrasal_strings("hello. how are you? i'm fine, thank you")
 
-    desafio_05 = desafio._is_anagram_of_palindrome('Olá tudo bem')
+    desafio_05_extra = desafio.is_anagram_of_palindrome('Alegria')
+    desafio_05 = desafio.is_anagram_of_palindrome('Olá tudo bem')
     print('debuging')
-
