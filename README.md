@@ -4,13 +4,13 @@ This repository contains solutions for for the Code Challenges from PWC recruitm
 Each challenge is implemented by a public method within the `Desafios` class.
 
 ## Challenge Solutions
-a total of 5 challenges:
+a total of 5 challenges which solutions are in the following methods:
 
-1. `reverse_phrase_part_1(phrase: str) -> str:`
-1. `remove_duplicated_characters(string: str) -> str:`
-1. `find_largest_palindrome_substring(string: str) -> str:`
-1. `capitalize_phrasal_strings(string: str) -> str:`
-1. `is_anagram_of_palindrome(word: str) -> bool:`
+1. `reverse_phrase_part_1(self, string_phrase: str) -> str:`
+1. `remove_duplicated_characters(self, string_phrase: str) -> str:`
+1. `find_largest_palindrome_substring(self, string_phrase: str) -> str:`
+1. `capitalize_phrasal_strings(self, string_phrase: str) -> str:`
+1. `is_anagram_of_palindrome(self, word: str) -> bool:`
 
 ## Usage
 Please, check `if __name__ == '__main__'` in main.py
